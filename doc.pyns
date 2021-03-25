@@ -1,0 +1,44 @@
+# PynSource Version 1.2
+{'type':'meta', 'info1':'Lorem ipsum dolor sit amet, consectetur adipiscing elit is latin. Comments are saved.'}
+{'type':'umlshape', 'id':'Context', 'x':598, 'y':431, 'width':138, 'height':138, 'attrs': 'display_name|parent|parent_entry_pos|symbol_table', 'meths': '__init__'}
+{'type':'umlshape', 'id':'Error', 'x':653, 'y':680, 'width':90, 'height':154, 'attrs': 'details|error_name|pos_end|pos_start', 'meths': '__init__|as_string'}
+{'type':'umlshape', 'id':'IllegalCharError', 'x':435, 'y':928, 'width':170, 'height':64, 'attrs': '', 'meths': '__init__'}
+{'type':'umlshape', 'id':'InvalidSyntaxError', 'x':629, 'y':929, 'width':190, 'height':64, 'attrs': '', 'meths': '__init__'}
+{'type':'umlshape', 'id':'RTError', 'x':788, 'y':763, 'width':154, 'height':122, 'attrs': 'context', 'meths': '__init__|as_string|generate_traceback'}
+{'type':'umlshape', 'id':'ExpectedCharError', 'x':791, 'y':677, 'width':180, 'height':64, 'attrs': '', 'meths': '__init__'}
+{'type':'umlshape', 'id':'Interpreter', 'x':458, 'y':11, 'width':162, 'height':272, 'attrs': '', 'meths': 'no_visit_method|visit|visit_BinOpNode|visit_CallNode|visit_ForNode|visit_FuncDefNode|visit_IfNode|visit_ListNode|visit_NumberNode|visit_StringNode|visit_UnaryOpNode|visit_VarAccessNode|visit_VarAssignNode|visit_WhileNode'}
+{'type':'umlshape', 'id':'Lexer', 'x':38, 'y':13, 'width':162, 'height':298, 'attrs': 'current_char|fn|pos|text', 'meths': '__init__|advance|make_equals|make_greater_than|make_identifier|make_less_than|make_minus_or_arrow|make_not_equals|make_number|make_string|make_tokens'}
+{'type':'umlshape', 'id':'Position', 'x':90, 'y':353, 'width':90, 'height':186, 'attrs': 'col|fn|ftxt|idx|ln', 'meths': '__init__|advance|copy'}
+{'type':'umlshape', 'id':'VarAccessNode', 'x':1166, 'y':1118, 'width':140, 'height':122, 'attrs': 'pos_end|pos_start|var_name_tok', 'meths': '__init__'}
+{'type':'umlshape', 'id':'VarAssignNode', 'x':1450, 'y':899, 'width':140, 'height':138, 'attrs': 'pos_end|pos_start|value_node|var_name_tok', 'meths': '__init__'}
+{'type':'umlshape', 'id':'NumberNode', 'x':1456, 'y':730, 'width':110, 'height':138, 'attrs': 'pos_end|pos_start|tok', 'meths': '__init__|__repr__'}
+{'type':'umlshape', 'id':'StringNode', 'x':1036, 'y':752, 'width':110, 'height':138, 'attrs': 'pos_end|pos_start|tok', 'meths': '__init__|__repr__'}
+{'type':'umlshape', 'id':'BinOpNode', 'x':1177, 'y':751, 'width':100, 'height':170, 'attrs': 'left_node|op_tok|pos_end|pos_start|right_node', 'meths': '__init__|__repr__'}
+{'type':'umlshape', 'id':'UnaryOpNode', 'x':1167, 'y':956, 'width':120, 'height':154, 'attrs': 'node|op_tok|pos_end|pos_start', 'meths': '__init__|__repr__'}
+{'type':'umlshape', 'id':'IfNode', 'x':1044, 'y':922, 'width':82, 'height':138, 'attrs': 'cases|else_case|pos_end|pos_start', 'meths': '__init__'}
+{'type':'umlshape', 'id':'ForNode', 'x':1324, 'y':1073, 'width':138, 'height':186, 'attrs': 'body_node|end_value_node|pos_end|pos_start|start_value_node|step_value_node|var_name_tok', 'meths': '__init__'}
+{'type':'umlshape', 'id':'WhileNode', 'x':1480, 'y':1075, 'width':122, 'height':138, 'attrs': 'body_node|condition_node|pos_end|pos_start', 'meths': '__init__'}
+{'type':'umlshape', 'id':'FuncDefNode', 'x':1308, 'y':905, 'width':120, 'height':154, 'attrs': 'arg_name_toks|body_node|pos_end|pos_start|var_name_tok', 'meths': '__init__'}
+{'type':'umlshape', 'id':'CallNode', 'x':1033, 'y':1095, 'width':106, 'height':138, 'attrs': 'arg_nodes|node_to_call|pos_end|pos_start', 'meths': '__init__'}
+{'type':'umlshape', 'id':'ListNode', 'x':1307, 'y':754, 'width':114, 'height':122, 'attrs': 'element_nodes|pos_end|pos_start', 'meths': '__init__'}
+{'type':'umlshape', 'id':'Parser', 'x':281, 'y':14, 'width':98, 'height':378, 'attrs': 'current_tok|tok_idx|tokens', 'meths': '__init__|advance|arith_expr|atom|bin_op|call|comp_expr|expr|factor|for_expr|func_def|if_expr|list_expr|parse|power|term|while_expr'}
+{'type':'umlshape', 'id':'ParseResult', 'x':1311, 'y':406, 'width':170, 'height':186, 'attrs': 'advance_count|error|node', 'meths': '__init__|failure|register|register_advancement|success'}
+{'type':'umlshape', 'id':'RTResult', 'x':1173, 'y':407, 'width':90, 'height':154, 'attrs': 'error|value', 'meths': '__init__|failure|register|success'}
+{'type':'umlshape', 'id':'SymbolTable', 'x':814, 'y':410, 'width':120, 'height':154, 'attrs': 'parent|symbols', 'meths': '__init__|get|remove|set'}
+{'type':'umlshape', 'id':'Token', 'x':1044, 'y':410, 'width':82, 'height':170, 'attrs': 'pos_end|pos_start|type|value', 'meths': '__init__|__repr__|matches'}
+{'type':'umlshape', 'id':'Value', 'x':1739, 'y':240, 'width':154, 'height':442, 'attrs': 'context|pos_end|pos_start', 'meths': '__init__|added_to|anded_by|copy|dived_by|execute|get_comparison_eq|get_comparison_gt|get_comparison_gte|get_comparison_lt|get_comparison_lte|get_comparison_ne|illegal_operation|is_true|multed_by|notted|ored_by|powed_by|set_context|set_pos|subbed_by'}
+{'type':'umlshape', 'id':'Number', 'x':1949, 'y':238, 'width':154, 'height':362, 'attrs': 'value', 'meths': '__init__|__repr__|added_to|anded_by|copy|dived_by|get_comparison_eq|get_comparison_gt|get_comparison_gte|get_comparison_lt|get_comparison_lte|get_comparison_ne|is_true|multed_by|notted|ored_by|powed_by|subbed_by'}
+{'type':'umlshape', 'id':'Function', 'x':2022, 'y':802, 'width':90, 'height':170, 'attrs': 'arg_names|body_node|name', 'meths': '__init__|__repr__|copy|execute'}
+{'type':'umlshape', 'id':'String', 'x':1918, 'y':803, 'width':82, 'height':170, 'attrs': 'value', 'meths': '__init__|__repr__|added_to|copy|is_true|multed_by'}
+{'type':'umlshape', 'id':'List', 'x':1807, 'y':799, 'width':82, 'height':186, 'attrs': 'elements', 'meths': '__init__|__repr__|added_to|copy|dived_by|multed_by|subbed_by'}
+{'type':'edge', 'id':'InvalidSyntaxError_to_Error', 'source':'InvalidSyntaxError', 'target':'Error', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'ExpectedCharError_to_Error', 'source':'ExpectedCharError', 'target':'Error', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'RTError_to_Error', 'source':'RTError', 'target':'Error', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'IllegalCharError_to_Error', 'source':'IllegalCharError', 'target':'Error', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'Position_to_Lexer', 'source':'Position', 'target':'Lexer', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'Number_to_Value', 'source':'Number', 'target':'Value', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'List_to_Value', 'source':'List', 'target':'Value', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'Function_to_Value', 'source':'Function', 'target':'Value', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'String_to_Value', 'source':'String', 'target':'Value', 'uml_edge_type': 'generalisation'}
+{'type':'edge', 'id':'Value_to_String', 'source':'Value', 'target':'String', 'uml_edge_type': 'composition'}
+{'type':'edge', 'id':'Value_to_Number', 'source':'Value', 'target':'Number', 'uml_edge_type': 'composition'}
