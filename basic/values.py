@@ -541,7 +541,7 @@ class BuiltInFunction(BaseFunction):
             with open(fn, "r") as f:
                 script = f.read()
         except Exception as e:
-            return RTResult().failure(RTError(self.pos_start, self.pos_end, f"Failed to load script \"{fn}\"\n" + str(e)))
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, f"Failed to load script \"{fn}\"\n" + str(e), exec_ctx))
 
         _, error = basic_run.run(fn, script)
 
