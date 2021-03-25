@@ -550,6 +550,27 @@ class BuiltInFunction(BaseFunction):
         return RTResult().success(basic.values.Number.null)
     execute_run.arg_names = ["fn"]
 
+    def execute_import(self, exec_ctx):
+        fn = exec_ctx.symbol_table.get("fn")
+
+        if not isinstance(fn, String):
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, "Argument must be a string", exec_ctx))
+
+        fn = fn.value
+
+        try:
+            with open(fn, "r") as f:
+                script = f.read()
+        except Exception as e:
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, f"Failed to load script \"{fn}\"\n" + str(e), exec_ctx))
+
+        _, error = basic_run.run(fn, script)
+
+        if error:
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, f"Failed to finish executing script \"{fn}\"\n" + error.as_string(), exec_ctx))
+        return RTResult().success(basic.values.Number.null)
+    execute_import.arg_names = ["fn"]
+
     def execute_len(self, exec_ctx):
         list_ = exec_ctx.symbol_table.get("list")
 
@@ -573,3 +594,4 @@ BuiltInFunction.pop = BuiltInFunction("pop")
 BuiltInFunction.extend = BuiltInFunction("extend")
 BuiltInFunction.len = BuiltInFunction("len")
 BuiltInFunction.run = BuiltInFunction("run")
+BuiltInFunction.import_fun = BuiltInFunction("import")
