@@ -1,0 +1,49 @@
+# main LIB
+
+# joins a list with the seperator inbetween
+FUN join(elements, seperator)
+    VAR result = ""
+    VAR len = LEN(elements)
+
+    FOR i = 0 TO len THEN
+        VAR result = result + elements/i
+        IF i != len -1 THEN VAR result = result + seperator
+    END
+
+    RETURN result
+END
+
+# maps elements from list to a new list using a function
+FUN map(elements, func)
+    VAR new_elements = []
+
+    FOR i = 0 TO LEN(elements) THEN
+        APPEND(new_elements, func(elements/i))
+    END
+
+    RETURN new_elements
+END
+
+# adds oop to any string
+FUN oopify(prefix) -> prefix + "oop"
+
+
+# pretty prints a list 
+FUN PRINT_LIST(list) -> PRINT_LIST_R(list, 0)
+FUN PRINT_LIST_R(list, tab)
+    IF IS_LIST(list) == 0 THEN
+        RAISE("Argument must be a list")
+        RETURN 0 
+    END
+
+    VAR len = LEN(list)
+
+    FOR i = 0 TO len THEN
+        IF IS_LIST(list/i) THEN 
+            PRINT_LIST_R(list/i, (tab+1))
+        ELSE
+            PRINT(" "*tab +  STR(list/i))
+        END
+    END
+    RETURN 1
+END

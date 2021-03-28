@@ -36,9 +36,14 @@ global_symbol_table.set("EXTEND", BuiltInFunction.extend)
 global_symbol_table.set("LEN", BuiltInFunction.len)
 global_symbol_table.set("RUN", BuiltInFunction.run)
 global_symbol_table.set("IMPORT", BuiltInFunction.import_fun)
+global_symbol_table.set("FWRITE", BuiltInFunction.write_to_file)
+global_symbol_table.set("FREAD", BuiltInFunction.read_file)
+global_symbol_table.set("DELFILE", BuiltInFunction.delete_file)
+global_symbol_table.set("RAISE", BuiltInFunction.raise_error)
+global_symbol_table.set("STR", BuiltInFunction.str)
 
 
-def run(fn, text):
+def run(fn, text, ctx='<program>'):
     # generate tokens
     lexer = Lexer(fn, text)
     tokens, error = lexer.make_tokens()
@@ -54,7 +59,7 @@ def run(fn, text):
 
     # run program
     interpreter = Interpreter()
-    context = Context('<program>')
+    context = Context(ctx)
     context.symbol_table = global_symbol_table
     result = interpreter.visit(ast.node, context)
 

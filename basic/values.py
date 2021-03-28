@@ -3,6 +3,7 @@ from basic.error import *
 from basic.rtresult import *
 from basic.interpreter import *
 from basic.symboltable import *
+from basic.util import *
 
 import basic_run
 
@@ -552,7 +553,12 @@ class BuiltInFunction(BaseFunction):
 
     def execute_import(self, exec_ctx):
         fn = exec_ctx.symbol_table.get("fn")
+        fn = String(str(fn) + ".lang")
+        filename = searchFile(str(fn))
+        if filename == None:
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, "Library not found", exec_ctx))
 
+        fn = String(str(filename))
         if not isinstance(fn, String):
             return RTResult().failure(RTError(self.pos_start, self.pos_end, "Argument must be a string", exec_ctx))
 
@@ -579,6 +585,80 @@ class BuiltInFunction(BaseFunction):
         return RTResult().success(basic.values.Number(len(list_.elements)))
     execute_len.arg_names = ["list"]
 
+    def execute_write_to_file(self, exec_ctx):
+        file = exec_ctx.symbol_table.get("file")
+        value = exec_ctx.symbol_table.get("value")
+        option = exec_ctx.symbol_table.get("option")
+
+        if not isinstance(file, String):
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, "First argument list must be a string", exec_ctx))
+        if not isinstance(option, String):
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, "Third argument list must be a string", exec_ctx))
+
+        if not (str(option) == "w" or str(option) == "a"):
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, "Third argument list must be \"a\" or \"w\"", exec_ctx))
+
+        # not needed --> able to print lists, ...
+        # if not isinstance(value, String):
+        #     return RTResult().failure(RTError(self.pos_start, self.pos_end, "Second argument list must be a string", exec_ctx))
+
+        try:
+            with open(str(file), str(option)) as f:
+                f.write(str(value) + "\n")
+        except Exception as e:
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, f"Failed to write to file \"{file}\"\n" + str(e), exec_ctx))
+        return RTResult().success(basic.values.Number.true)
+    execute_write_to_file.arg_names = ["file", "value", "option"]
+
+    def execute_delete_file(self, exec_ctx):
+        file = exec_ctx.symbol_table.get("file")
+
+        if not isinstance(file, String):
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, "First argument list must be a string", exec_ctx))
+
+        try:
+            os.remove(str(file))
+        except Exception as e:
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, f"Failed to remove file \"{file}\"\n" + str(e), exec_ctx))
+
+        return RTResult().success(basic.values.Number.true)
+    execute_delete_file.arg_names = ["file"]
+
+    def execute_read_file(self, exec_ctx):
+        file = exec_ctx.symbol_table.get("file")
+
+        if not isinstance(file, String):
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, "First argument list must be a string", exec_ctx))
+
+        ret = List([])
+        try:
+            with open(str(file), "r") as f:
+                lines = f.readlines()
+                for line in lines:
+                    l = String(str(line).rstrip())
+                    ret.elements.append(l)
+
+        except Exception as e:
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, f"Failed to read file \"{file}\"\n" + str(e), exec_ctx))
+        return RTResult().success(ret)
+    execute_read_file.arg_names = ["file"]
+
+    def execute_raise_error(self, exec_ctx):
+        err = exec_ctx.symbol_table.get("err")
+        if not isinstance(err, String):
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, "First argument list must be a string", exec_ctx))
+
+        return RTResult().failure(RTError(self.pos_start, self.pos_end, f"{str(err)}\n", exec_ctx))
+    execute_raise_error.arg_names = ["err"]
+
+    def execute_str(self, exec_ctx):
+        val = exec_ctx.symbol_table.get("val")
+        try:
+            return RTResult().success(String(str(val)))
+        except Exception as e:
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, f"Error while converting val to String: {str(e)}\n", exec_ctx))
+    execute_str.arg_names = ["val"]
+
 
 BuiltInFunction.print = BuiltInFunction("print")
 BuiltInFunction.print_ret = BuiltInFunction("print_ret")
@@ -595,3 +675,8 @@ BuiltInFunction.extend = BuiltInFunction("extend")
 BuiltInFunction.len = BuiltInFunction("len")
 BuiltInFunction.run = BuiltInFunction("run")
 BuiltInFunction.import_fun = BuiltInFunction("import")
+BuiltInFunction.write_to_file = BuiltInFunction("write_to_file")
+BuiltInFunction.delete_file = BuiltInFunction("delete_file")
+BuiltInFunction.read_file = BuiltInFunction("read_file")
+BuiltInFunction.raise_error = BuiltInFunction("raise_error")
+BuiltInFunction.str = BuiltInFunction("str")

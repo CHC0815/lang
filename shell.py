@@ -18,12 +18,12 @@ def main():
         run(text)
 
 
-def run(text):
-    result, error = basic_run.run('std::in', text)
+def run(text, ctx="std::in", res=True):
+    result, error = basic_run.run(ctx, text)
 
     if(error):
         print(error.as_string())
-    elif result:
+    elif result and res:
         if len(result.elements) == 1:
             print(repr(result.elements[0]))
         else:
@@ -31,10 +31,15 @@ def run(text):
 
 
 def run_file(argv):
-    if sys.argv[1] == "--file":
-        fn = sys.argv[2]
-        cmd = 'RUN("' + fn + '")'
-        run(cmd)
+    if argv[1] == "--file":
+        fn = argv[2]
+        script = ""
+        try:
+            with open(fn, "r") as f:
+                script = f.read()
+        except Exception as e:
+            print("IO Error: " + str(e))
+        run(script, fn, False)
 
 
 if __name__ == "__main__":
