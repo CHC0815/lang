@@ -203,6 +203,7 @@ Number.null = Number(0)
 Number.false = Number(0)
 Number.true = Number(1)
 Number.math_PI = Number(math.pi)
+Number.math_E = Number(math.e)
 
 
 class String(Value):
@@ -604,7 +605,8 @@ class BuiltInFunction(BaseFunction):
 
         try:
             with open(str(file), str(option)) as f:
-                f.write(str(value) + "\n")
+                val = str(value) if isinstance(value, String) else repr(value)
+                f.write(val + "\n")
         except Exception as e:
             return RTResult().failure(RTError(self.pos_start, self.pos_end, f"Failed to write to file \"{file}\"\n" + str(e), exec_ctx))
         return RTResult().success(basic.values.Number.true)
@@ -659,6 +661,27 @@ class BuiltInFunction(BaseFunction):
             return RTResult().failure(RTError(self.pos_start, self.pos_end, f"Error while converting val to String: {str(e)}\n", exec_ctx))
     execute_str.arg_names = ["val"]
 
+    def execute_sin(self, exec_ctx):
+        num = exec_ctx.symbol_table.get("num")
+        if not isinstance(num, Number):
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, "First argument list must be a number", exec_ctx))
+        return RTResult().success(Number(math.sin(num.value)))
+    execute_sin.arg_names = ["num"]
+
+    def execute_cos(self, exec_ctx):
+        num = exec_ctx.symbol_table.get("num")
+        if not isinstance(num, Number):
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, "First argument list must be a number", exec_ctx))
+        return RTResult().success(Number(math.cos(num.value)))
+    execute_cos.arg_names = ["num"]
+
+    def execute_tan(self, exec_ctx):
+        num = exec_ctx.symbol_table.get("num")
+        if not isinstance(num, Number):
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, "First argument list must be a number", exec_ctx))
+        return RTResult().success(Number(math.tan(num.value)))
+    execute_tan.arg_names = ["num"]
+
 
 BuiltInFunction.print = BuiltInFunction("print")
 BuiltInFunction.print_ret = BuiltInFunction("print_ret")
@@ -680,3 +703,6 @@ BuiltInFunction.delete_file = BuiltInFunction("delete_file")
 BuiltInFunction.read_file = BuiltInFunction("read_file")
 BuiltInFunction.raise_error = BuiltInFunction("raise_error")
 BuiltInFunction.str = BuiltInFunction("str")
+BuiltInFunction.sin = BuiltInFunction("sin")
+BuiltInFunction.cos = BuiltInFunction("cos")
+BuiltInFunction.tan = BuiltInFunction("tan")

@@ -47,3 +47,9 @@ FUN PRINT_LIST_R(list, tab)
     END
     RETURN 1
 END
+
+# returns degree in radians
+FUN A2D(angle) -> angle * MATH_PI / 180
+
+# returns radians in degree
+FUN D2A(degree) -> degree * 180 / MATH_PI

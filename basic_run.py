@@ -18,8 +18,12 @@ global_symbol_table.set("NULL", Number.null)
 global_symbol_table.set("FALSE", Number.false)
 global_symbol_table.set("TRUE", Number.true)
 global_symbol_table.set("MATH_PI", Number.math_PI)
+global_symbol_table.set("MATH_E", Number.math_E)
 
 # built-in functions
+global_symbol_table.set("SIN", BuiltInFunction.sin)
+global_symbol_table.set("COS", BuiltInFunction.cos)
+global_symbol_table.set("TAN", BuiltInFunction.tan)
 global_symbol_table.set("PRINT", BuiltInFunction.print)
 global_symbol_table.set("PRINT_RET", BuiltInFunction.print_ret)
 global_symbol_table.set("INPUT", BuiltInFunction.input)
