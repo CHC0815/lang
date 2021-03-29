@@ -45,6 +45,7 @@ global_symbol_table.set("FREAD", BuiltInFunction.read_file)
 global_symbol_table.set("DELFILE", BuiltInFunction.delete_file)
 global_symbol_table.set("RAISE", BuiltInFunction.raise_error)
 global_symbol_table.set("STR", BuiltInFunction.str)
+global_symbol_table.set("FILE", BuiltInFunction.file)
 
 
 def run(fn, text, ctx='<program>'):

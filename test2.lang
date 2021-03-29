@@ -1,5 +1,11 @@
 IMPORT("main")
 
-FOR i = 0 TO 10000 THEN
-    PRINT(STR(i) + "Theo ist nen pisser")
+VAR file = FILE("niggur")
+
+FOR i = 0 TO 5 THEN
+    FWRITE(file, "Theo stinkt wirklich", "w")
+    VAR content = FREAD(file)
+    PRINT(content)
 END
+
+DELFILE("niggur")

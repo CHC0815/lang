@@ -90,6 +90,61 @@ class Value:
         )
 
 
+class FileWrapper(Value):
+    def __init__(self, name):
+        super().__init__()
+        self.name = name
+        self.file = None
+
+    def file_open(self):
+        self.file = open(str(self.name), "a+")
+
+    def write_to_file(self, value):
+        self.close_file()
+        if os.path.isfile(str(self.name)):
+            os.remove(str(self.name))
+        self.file_open()
+        self.append_to_file(value)
+
+    def append_to_file(self, value):
+        if not self.is_open():
+            self.file_open()
+        self.file.write(value)
+
+    def close_file(self):
+        if self.file and not self.file.closed:
+            self.file.close()
+        self.file = None
+        #! TODO: ADD TO LIST TO AUTO-CLOSE
+
+    def read_from_file(self):
+        if not self.is_open():
+            self.file_open()  # TODO extra log with information like SHOULD be opened first
+        self.file.seek(0)  # return to top
+        ret = List([])
+        lines = self.file.readlines()
+        for line in lines:
+            l = String(str(line).rstrip())
+            ret.elements.append(l)
+        return ret
+
+    def is_open(self):
+        if not self.file == None:
+            return not self.file.closed
+        return False
+
+    def copy(self):
+        # no copy so we do not lose reference to the file
+        #! possible errors with traceback
+        return self
+
+    def __str__(self):
+        return "File: " + str(self.name)
+
+    def __repr__(self):
+        return f'File: "{self.name}"'
+
+
 class Number(Value):
     def __init__(self, value):
         super().__init__()
@@ -591,22 +646,20 @@ class BuiltInFunction(BaseFunction):
         value = exec_ctx.symbol_table.get("value")
         option = exec_ctx.symbol_table.get("option")
 
-        if not isinstance(file, String):
-            return RTResult().failure(RTError(self.pos_start, self.pos_end, "First argument list must be a string", exec_ctx))
+        if not isinstance(file, FileWrapper):
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, "First argument list must be a file", exec_ctx))
         if not isinstance(option, String):
             return RTResult().failure(RTError(self.pos_start, self.pos_end, "Third argument list must be a string", exec_ctx))
 
         if not (str(option) == "w" or str(option) == "a"):
             return RTResult().failure(RTError(self.pos_start, self.pos_end, "Third argument list must be \"a\" or \"w\"", exec_ctx))
 
-        # not needed --> able to print lists, ...
-        # if not isinstance(value, String):
-        #     return RTResult().failure(RTError(self.pos_start, self.pos_end, "Second argument list must be a string", exec_ctx))
-
         try:
-            with open(str(file), str(option)) as f:
-                val = str(value) if isinstance(value, String) else repr(value)
-                f.write(val + "\n")
+            val = str(value) if isinstance(value, String) else repr(value)
+            if str(option) == "a":
+                file.append_to_file(val + "\n")
+            elif str(option) == "w":
+                file.write_to_file(val + "\n")
         except Exception as e:
             return RTResult().failure(RTError(self.pos_start, self.pos_end, f"Failed to write to file \"{file}\"\n" + str(e), exec_ctx))
         return RTResult().success(basic.values.Number.true)
@@ -629,17 +682,12 @@ class BuiltInFunction(BaseFunction):
     def execute_read_file(self, exec_ctx):
         file = exec_ctx.symbol_table.get("file")
 
-        if not isinstance(file, String):
-            return RTResult().failure(RTError(self.pos_start, self.pos_end, "First argument list must be a string", exec_ctx))
+        if not isinstance(file, FileWrapper):
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, "First argument list must be a file", exec_ctx))
 
         ret = List([])
         try:
-            with open(str(file), "r") as f:
-                lines = f.readlines()
-                for line in lines:
-                    l = String(str(line).rstrip())
-                    ret.elements.append(l)
-
+            ret = file.read_from_file()
         except Exception as e:
             return RTResult().failure(RTError(self.pos_start, self.pos_end, f"Failed to read file \"{file}\"\n" + str(e), exec_ctx))
         return RTResult().success(ret)
@@ -682,6 +730,13 @@ class BuiltInFunction(BaseFunction):
         return RTResult().success(Number(math.tan(num.value)))
     execute_tan.arg_names = ["num"]
 
+    def execute_create_file(self, exec_ctx):
+        filename = exec_ctx.symbol_table.get("fn")
+        if not isinstance(filename, String):
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, "First argument list must be a string", exec_ctx))
+        return RTResult().success(FileWrapper(filename))
+    execute_create_file.arg_names = ["fn"]
+
 
 BuiltInFunction.print = BuiltInFunction("print")
 BuiltInFunction.print_ret = BuiltInFunction("print_ret")
@@ -706,3 +761,4 @@ BuiltInFunction.str = BuiltInFunction("str")
 BuiltInFunction.sin = BuiltInFunction("sin")
 BuiltInFunction.cos = BuiltInFunction("cos")
 BuiltInFunction.tan = BuiltInFunction("tan")
+BuiltInFunction.file = BuiltInFunction("create_file")
