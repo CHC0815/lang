@@ -1,0 +1,26 @@
+# validates a point
+FUN IS_VALID_POINT(point)
+    IF LEN(point) != 2 THEN RETURN FALSE    
+    IF IS_NUM(point/0) == FALSE THEN RETURN FALSE
+    IF IS_NUM(point/1) == FALSE THEN RETURN FALSE
+    RETURN TRUE
+END
+
+# formatted print of a point
+FUN POINT_PRINT(point)
+    IF IS_VALID_POINT(point) THEN PRINT("Point {" + STR(point/0) + "," + STR(point/1) + "}")
+END
+
+# adds two points together
+FUN POINT_ADD(a, b)
+    IF IS_VALID_POINT(a) AND IS_VALID_POINT(b) THEN
+        RETURN [a/0 + b/0, a/1 + b/1]
+    END
+END
+
+# subtracts two points
+FUN POINT_SUB(a, b)
+    IF IS_VALID_POINT(a) AND IS_VALID_POINT(b) THEN
+        RETURN [a/0 - b/0, a/1 - b/1]
+    END
+END

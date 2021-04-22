@@ -1,11 +1,4 @@
-IMPORT("main")
+IMPORT("all")
+VAR text = "Hallo,Welt"
 
-VAR file = FILE("niggur")
-
-FOR i = 0 TO 5 THEN
-    FWRITE(file, "Theo stinkt wirklich", "w")
-    VAR content = FREAD(file)
-    PRINT(content)
-END
-
-DELFILE("niggur")
+PRINT_LIST(SPLIT(text, ","))

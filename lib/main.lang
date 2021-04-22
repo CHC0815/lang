@@ -48,8 +48,36 @@ FUN PRINT_LIST_R(list, tab)
     RETURN 1
 END
 
-# returns degree in radians
-FUN A2D(angle) -> angle * MATH_PI / 180
+# returns the substring of a given string from start to end
+FUN SUBSTR(str, start, end)
+    IF start < 0 THEN RAISE("Start must be greater or equal to 0")
+    IF end > LEN(str) THEN RAISE("End must be less than or equal to length of the string")
 
-# returns radians in degree
-FUN D2A(degree) -> degree * 180 / MATH_PI
+    VAR res = ""
+    FOR i = start TO end THEN
+        VAR res = res + str/i
+    END
+    RETURN res
+END
+
+# splits a string at a given seperator into a list
+FUN SPLIT(text, seperator)
+    IF IS_STR(text) == FALSE THEN RAISE("First argument must be a string")
+    IF (IS_STR(seperator) == FALSE OR LEN(seperator) != 1) THEN RAISE("Second argument must be a string of length 1")
+
+    VAR text = text + seperator
+    VAR res = []
+
+    VAR start = 0
+    VAR end = 0
+
+    FOR i = 0 TO LEN(text) THEN
+        IF (text/i) == seperator THEN
+            VAR sub = SUBSTR(text, start, end)
+            APPEND(res, sub)
+            VAR start = end + 1
+        END
+        VAR end = end + 1
+    END
+    RETURN res
+END

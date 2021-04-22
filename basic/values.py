@@ -278,6 +278,31 @@ class String(Value):
         else:
             return None, Value.illegal_operation(self, other)
 
+    def dived_by(self, other):
+        if isinstance(other, Number):
+            try:
+                return String(self.value[other.value]).set_context(self.context), None
+            except:
+                return None, RTError(
+                    other.pos_start, other.pos_end,
+                    'Element at this index could not be retrieved from string because index is out of bounds',
+                    self.context
+                )
+        else:
+            return None, Value.illegal_operation(self, other)
+
+    def get_comparison_eq(self, other):
+        if isinstance(other, String):
+            return Number.true if self.value == other.value else Number.false, None
+        else:
+            return None, Value.illegal_operation(self, other)
+
+    def get_comparison_ne(self, other):
+        if isinstance(other, String):
+            return Number.true if self.value != other.value else Number.false, None
+        else:
+            return None, Value.illegal_operation(self, other)
+
     def is_true(self):
         return len(self.value) > 0
 
@@ -636,9 +661,13 @@ class BuiltInFunction(BaseFunction):
     def execute_len(self, exec_ctx):
         list_ = exec_ctx.symbol_table.get("list")
 
-        if not isinstance(list_, List):
-            return RTResult().failure(RTError(self.pos_start, self.pos_end, "Argument list must be a list", exec_ctx))
-        return RTResult().success(basic.values.Number(len(list_.elements)))
+        if isinstance(list_, List):
+            return RTResult().success(basic.values.Number(len(list_.elements)))
+        elif isinstance(list_, String):
+            return RTResult().success(basic.values.Number(len(list_.value)))
+        else:
+            return RTResult().failure(RTError(self.pos_start, self.pos_end, "Argument list must be a list or a string", exec_ctx))
+
     execute_len.arg_names = ["list"]
 
     def execute_write_to_file(self, exec_ctx):
@@ -697,7 +726,7 @@ class BuiltInFunction(BaseFunction):
         err = exec_ctx.symbol_table.get("err")
         if not isinstance(err, String):
             return RTResult().failure(RTError(self.pos_start, self.pos_end, "First argument list must be a string", exec_ctx))
-
+        # TODO eins hoch
         return RTResult().failure(RTError(self.pos_start, self.pos_end, f"{str(err)}\n", exec_ctx))
     execute_raise_error.arg_names = ["err"]
 

@@ -1,0 +1,5 @@
+# returns degree in radians
+FUN D2R(angle) -> angle * MATH_PI / 180
+
+# returns radians in degree
+FUN R2D(degree) -> degree * 180 / MATH_PI
