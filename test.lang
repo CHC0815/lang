@@ -5,7 +5,6 @@ FUN main()
         VAR a = ["l", "sp"]
         VAR b = map(a, oopify)
         PRINT(join(b, ", "))
-	s
     END
 END
 
