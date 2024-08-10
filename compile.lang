@@ -1,0 +1,2 @@
+VAR x = 3
+PRINT(x)

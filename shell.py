@@ -5,8 +5,10 @@ except:
     pass
 
 import sys
-import basic_run
+
 import basic.error
+import basic_run
+from basic.compiler import compile_lang
 
 
 def main():
@@ -21,7 +23,7 @@ def main():
 def run(text, ctx="std::in", res=True):
     result, error = basic_run.run(ctx, text)
 
-    if(error):
+    if error:
         print(error.as_string())
     elif result and res:
         if len(result.elements) == 1:
@@ -42,6 +44,20 @@ def run_file(argv):
         run(script, fn, False)
 
 
+def compile_file(argv):
+    if argv[1] == "--file":
+        fn = argv[2]
+        script = ""
+        try:
+            with open(fn, "r") as f:
+                script = f.read()
+        except Exception as e:
+            print("IO Error: " + str(e))
+        error = compile_lang(fn, script)
+        if error:
+            print(error.as_string())
+
+
 if __name__ == "__main__":
     if len(sys.argv) == 1:
         main()
@@ -52,3 +68,5 @@ if __name__ == "__main__":
             if sys.argv[3] == "--shell":
                 run_file(sys.argv)
                 main()
+            elif sys.argv[3] == "--compile":
+                compile_file(sys.argv)
