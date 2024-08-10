@@ -1,8 +1,23 @@
 {
-    "python.autoComplete.extraPaths": [
-        "./../basic"
+    "files.trimTrailingWhitespace": true,
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "[python]": {
+            "editor.defaultFormatter": "ms-python.black-formatter",
+            "editor.formatOnSave": true,
+            "editor.codeActionsOnSave": {
+                "source.organizeImports": "explicit"
+            }
+    },
+    "black-formatter.args": [
+        "--line-length",
+        "100"
     ],
-    "python.analysis.extraPaths": [
-        "./../basic"
-    ]
+    "isort.args": [
+        "--profile",
+        "black"
+    ],
+    "python.analysis.typeCheckingMode": "basic",
+    "autoDocstring.docstringFormat": "google-notypes"
 }
